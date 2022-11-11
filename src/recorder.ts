@@ -33,6 +33,8 @@ export default class Recorder implements IRecorder {
 
 	private noAudio: boolean;
 
+	private additionalArgs: string[];
+
 	private process: ChildProcessWithoutNullStreams | null = null;
 	private eventEmitter: EventEmitter;
 
@@ -45,6 +47,7 @@ export default class Recorder implements IRecorder {
 		this.title = options.title;
 		this.ffmpegBinary = options.ffmpegBinary || this.ffmpegBinary;
 		this.playlistName = playlistName(options.playlistName);
+		this.additionalArgs = options.additionalArgs ?? [];
 		this.filePattern = (options.filePattern || this.filePattern)
 			.replace(/[\s:]+/gu, '_')
 			.replace(/_+/ug, '_');
@@ -119,7 +122,7 @@ export default class Recorder implements IRecorder {
 					'-hls_list_size', '0',
 					'-hls_segment_filename', `${this.filePattern}.mp4`,
 					`./${this.playlistName}.m3u8`,
-				],
+				].concat(this.additionalArgs),
 				{
 					detached: false,
 					cwd: this.destination,

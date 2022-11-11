@@ -9,6 +9,7 @@ export type Options = Partial<{
 	dirSizeThreshold: DirSizeThresholdOption;
 	ffmpegBinary: string;
 	noAudio: boolean;
+	additionalArgs: string[];
 }>;
 
 export type EventCallback = (...args: any[]) => void;
